@@ -5,8 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
-import useAllProducts from "@/Hooks/useAllProducts";
 import { useCart } from "@/context/CartContext";
+import useAllProducts from "@/hooks/useAllProducts";
 
 const HandPickedForYou = () => {
   const { allProducts, isLoading } = useAllProducts(1, 100);
@@ -53,17 +53,20 @@ const HandPickedForYou = () => {
                 Add to Cart
               </button>
             </div>
-            
+
             <p className="input-label mt-4">{product.category}</p>
             <h3 className="sub-section-title text-base truncate">
               {product.name}
             </h3>
-            
+
             <div className="flex items-center gap-1 mb-2">
-              <Star size={10} className="fill-brand-primary text-brand-primary" />
+              <Star
+                size={10}
+                className="fill-brand-primary text-brand-primary"
+              />
               <span className="text-[10px] text-gray-400 ml-1">New</span>
             </div>
-            
+
             <p className="text-xl font-bold">${product.price}</p>
           </div>
         ))}

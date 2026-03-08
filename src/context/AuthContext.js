@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useEffect, useState, useContext } from "react";
-import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import useAxiosPublic from "@/hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 
@@ -33,19 +33,26 @@ export const AuthProvider = ({ children }) => {
     setUser,
     loading,
     registerUser: async (name, email, password) => {
-      const res = await axiosPublic.post("/api/auth/register", { name, email, password });
+      const res = await axiosPublic.post("/api/auth/register", {
+        name,
+        email,
+        password,
+      });
       setUser(res.data.user);
       return res.data;
     },
     loginUser: async (email, password) => {
-      const res = await axiosPublic.post("/api/auth/login", { email, password });
+      const res = await axiosPublic.post("/api/auth/login", {
+        email,
+        password,
+      });
       setUser(res.data.user);
       return res.data;
     },
     logout: async () => {
       await axiosPublic.post("/api/auth/logout");
       setUser(null);
-    }
+    },
   };
 
   return (

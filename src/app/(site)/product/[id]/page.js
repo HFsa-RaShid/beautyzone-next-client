@@ -4,11 +4,10 @@ import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { Star, Minus, Plus } from "lucide-react";
-import useAllProducts from "@/Hooks/useAllProducts";
+import useAllProducts from "@/hooks/useAllProducts";
 import { useCart } from "@/context/CartContext";
 import HandPickedForYou from "@/components/product/HandPickedForYou";
 import ProductReviews from "@/components/product/ProductReviews";
-
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -22,7 +21,8 @@ const ProductDetails = () => {
   const productsArray = allProducts?.data?.products || [];
   const product = productsArray.find((p) => p._id === id);
 
-  if (!product) return <div className="py-20 text-center">Product not found.</div>;
+  if (!product)
+    return <div className="py-20 text-center">Product not found.</div>;
 
   return (
     <div className="bg-white min-h-screen">
@@ -37,7 +37,13 @@ const ProductDetails = () => {
                   onClick={() => setSelectedImg(idx)}
                   className={`w-20 h-28 cursor-pointer border-2 relative ${selectedImg === idx ? "border-black" : "border-transparent"}`}
                 >
-                  <Image src={img} alt="thumb" fill className="object-cover" sizes="100px" />
+                  <Image
+                    src={img}
+                    alt="thumb"
+                    fill
+                    className="object-cover"
+                    sizes="100px"
+                  />
                 </div>
               ))}
             </div>
@@ -57,7 +63,9 @@ const ProductDetails = () => {
           <div className="w-full lg:w-2/5">
             <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
             <div className="flex items-center gap-1 mb-4">
-              {[...Array(5)].map((_, i) => <Star key={i} size={14} className="fill-black" />)}
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={14} className="fill-black" />
+              ))}
               <span className="text-xs text-gray-400 ml-2">157 Reviews</span>
             </div>
             <p className="text-2xl font-bold mb-8">${product.price}</p>
@@ -69,17 +77,28 @@ const ProductDetails = () => {
                 { label: "The Lowdown", val: product.THE_LOWDOWN },
               ].map((item, idx) => (
                 <div key={idx}>
-                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-1">{item.label}:</h4>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.val}</p>
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-1">
+                    {item.label}:
+                  </h4>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {item.val}
+                  </p>
                 </div>
               ))}
             </div>
 
             <div className="mt-10 flex items-center gap-4">
               <div className="flex border border-gray-200">
-                <button onClick={() => setQty(q => Math.max(1, q - 1))} className="p-3"><Minus size={14} /></button>
+                <button
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  className="p-3"
+                >
+                  <Minus size={14} />
+                </button>
                 <span className="font-bold text-sm py-2 px-4">{qty}</span>
-                <button onClick={() => setQty(q => q + 1)} className="p-3"><Plus size={14} /></button>
+                <button onClick={() => setQty((q) => q + 1)} className="p-3">
+                  <Plus size={14} />
+                </button>
               </div>
               <button
                 onClick={() => addToCart(product, qty)}

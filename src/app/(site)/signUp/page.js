@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import useAxiosPublic from "@/hooks/useAxiosPublic";
 import { useAuth } from "@/context/AuthContext";
 
 const SignUpPage = () => {
@@ -19,7 +19,9 @@ const SignUpPage = () => {
     setLoading(true);
 
     const formData = new FormData(e.target);
-    const { name, email, password, confirmPassword } = Object.fromEntries(formData.entries());
+    const { name, email, password, confirmPassword } = Object.fromEntries(
+      formData.entries(),
+    );
 
     if (password !== confirmPassword) {
       setLoading(false);
@@ -32,12 +34,16 @@ const SignUpPage = () => {
     }
 
     try {
-      const res = await axiosPublic.post("/api/auth/register", { name, email, password });
+      const res = await axiosPublic.post("/api/auth/register", {
+        name,
+        email,
+        password,
+      });
 
       if (res.data.status === "success") {
         setUser(res.data.user);
         toast.success("Successfully Signed Up!");
-        router.push("/"); 
+        router.push("/");
       }
     } catch (err) {
       console.error("Signup error:", err.response?.data);
@@ -54,14 +60,17 @@ const SignUpPage = () => {
 
   return (
     <div className="bg-[#f5e9da] min-h-screen font-sans flex flex-col">
-
-
       <div className="grow flex items-center justify-center py-20 px-6">
         <div className="max-w-md w-full text-center">
-          <h2 className="text-4xl font-serif mb-2 text-black">Create your account</h2>
+          <h2 className="text-4xl font-serif mb-2 text-black">
+            Create your account
+          </h2>
           <p className="text-sm mb-10 text-gray-600">
             Or{" "}
-            <Link href="/signin" className="font-bold underline hover:text-gray-800">
+            <Link
+              href="/signin"
+              className="font-bold underline hover:text-gray-800"
+            >
               sign in to your existing account
             </Link>
           </p>
@@ -69,13 +78,35 @@ const SignUpPage = () => {
           <div className="bg-white p-10 shadow-sm rounded-sm text-left">
             <form onSubmit={handleSignUp} className="space-y-5">
               {[
-                { label: "Full name", name: "name", type: "text", placeholder: "Hafsa Rashid" },
-                { label: "Email address", name: "email", type: "email", placeholder: "hafsa@gmail.com" },
-                { label: "Password", name: "password", type: "password", placeholder: "........" },
-                { label: "Confirm password", name: "confirmPassword", type: "password", placeholder: "........" },
+                {
+                  label: "Full name",
+                  name: "name",
+                  type: "text",
+                  placeholder: "Hafsa Rashid",
+                },
+                {
+                  label: "Email address",
+                  name: "email",
+                  type: "email",
+                  placeholder: "hafsa@gmail.com",
+                },
+                {
+                  label: "Password",
+                  name: "password",
+                  type: "password",
+                  placeholder: "........",
+                },
+                {
+                  label: "Confirm password",
+                  name: "confirmPassword",
+                  type: "password",
+                  placeholder: "........",
+                },
               ].map((field) => (
                 <div key={field.name}>
-                  <label className="text-[10px] uppercase font-bold text-gray-400 block mb-1">{field.label}</label>
+                  <label className="text-[10px] uppercase font-bold text-gray-400 block mb-1">
+                    {field.label}
+                  </label>
                   <input
                     name={field.name}
                     type={field.type}
@@ -88,10 +119,20 @@ const SignUpPage = () => {
 
               <div className="pt-2">
                 <label className="flex items-start gap-3 text-[10px] font-medium text-gray-500 cursor-pointer">
-                  <input type="checkbox" required className="mt-0.5 accent-black" />
+                  <input
+                    type="checkbox"
+                    required
+                    className="mt-0.5 accent-black"
+                  />
                   <span>
-                    I agree to the <span className="text-black font-bold underline">Terms of Service</span> and{" "}
-                    <span className="text-black font-bold underline">Privacy Policy</span>
+                    I agree to the{" "}
+                    <span className="text-black font-bold underline">
+                      Terms of Service
+                    </span>{" "}
+                    and{" "}
+                    <span className="text-black font-bold underline">
+                      Privacy Policy
+                    </span>
                   </span>
                 </label>
               </div>
@@ -100,7 +141,9 @@ const SignUpPage = () => {
                 type="submit"
                 disabled={loading}
                 className={`w-full bg-black text-white py-4 text-[11px] font-bold uppercase tracking-[0.2em] transition-all mt-4 ${
-                  loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-900"
+                  loading
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:bg-gray-900"
                 }`}
               >
                 {loading ? "Creating Account..." : "Create Account"}
@@ -116,7 +159,6 @@ const SignUpPage = () => {
           </p>
         </div>
       </div>
-  
     </div>
   );
 };

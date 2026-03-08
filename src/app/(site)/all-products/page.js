@@ -1,15 +1,13 @@
-
 "use client";
 
 import React, { useState, useEffect } from "react";
 import { Star, ChevronDown, ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import useAllProducts from "@/Hooks/useAllProducts";
+import useAllProducts from "@/hooks/useAllProducts";
 import { useCart } from "@/context/CartContext";
 
 const AllProducts = () => {
-  
   const [activeCategory, setActiveCategory] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("selectedCategory");
@@ -24,27 +22,38 @@ const AllProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState("Featured");
   const [showSortMenu, setShowSortMenu] = useState(false);
-  
+
   const { allProducts, isLoading, refetch } = useAllProducts(currentPage);
   const router = useRouter();
   const { addToCart } = useCart();
 
-  const categories = ["All Product", "Serums", "Sun Care", "Toners", "Cleansers", "Kits", "Moisturizers", "Makeup"];
+  const categories = [
+    "All Product",
+    "Serums",
+    "Sun Care",
+    "Toners",
+    "Cleansers",
+    "Kits",
+    "Moisturizers",
+    "Makeup",
+  ];
 
   useEffect(() => {
     refetch();
   }, [activeCategory, sortOption, currentPage, refetch]);
 
-  if (isLoading) return <div className="text-center py-20">Loading Products...</div>;
+  if (isLoading)
+    return <div className="text-center py-20">Loading Products...</div>;
 
   const productsArray = allProducts?.data?.products || [];
   const totalPages = allProducts?.data?.totalPages || 1;
 
-
-  let displayProducts = activeCategory === "All Product"
-    ? productsArray
-    : productsArray.filter(p => p.category?.toLowerCase() === activeCategory.toLowerCase());
-
+  let displayProducts =
+    activeCategory === "All Product"
+      ? productsArray
+      : productsArray.filter(
+          (p) => p.category?.toLowerCase() === activeCategory.toLowerCase(),
+        );
 
   if (sortOption === "Price: Low to High") {
     displayProducts = [...displayProducts].sort((a, b) => a.price - b.price);
@@ -68,9 +77,14 @@ const AllProducts = () => {
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => { setActiveCategory(cat); setCurrentPage(1); }}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  setCurrentPage(1);
+                }}
                 className={`text-[13px] font-medium transition-all whitespace-nowrap pb-1 ${
-                  activeCategory === cat ? "text-black border-b-2 border-black" : "text-gray-500 hover:text-black"
+                  activeCategory === cat
+                    ? "text-black border-b-2 border-black"
+                    : "text-gray-500 hover:text-black"
                 }`}
               >
                 {cat}
@@ -79,14 +93,31 @@ const AllProducts = () => {
           </div>
 
           <div className="relative">
-            <div onClick={() => setShowSortMenu(!showSortMenu)} className="flex items-center gap-2 text-[13px] font-medium text-black cursor-pointer">
-              Sort : <span className="text-gray-500 flex items-center gap-1">{sortOption} <ChevronDown size={14} /></span>
+            <div
+              onClick={() => setShowSortMenu(!showSortMenu)}
+              className="flex items-center gap-2 text-[13px] font-medium text-black cursor-pointer"
+            >
+              Sort :{" "}
+              <span className="text-gray-500 flex items-center gap-1">
+                {sortOption} <ChevronDown size={14} />
+              </span>
             </div>
             {showSortMenu && (
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 shadow-xl z-50 rounded-md py-2 text-xs">
-                {["Featured", "Price: Low to High", "Price: High to Low"].map((opt) => (
-                  <div key={opt} onClick={() => { setSortOption(opt); setShowSortMenu(false); }} className="px-4 py-2 hover:bg-gray-50 cursor-pointer">{opt}</div>
-                ))}
+                {["Featured", "Price: Low to High", "Price: High to Low"].map(
+                  (opt) => (
+                    <div
+                      key={opt}
+                      onClick={() => {
+                        setSortOption(opt);
+                        setShowSortMenu(false);
+                      }}
+                      className="px-4 py-2 hover:bg-gray-50 cursor-pointer"
+                    >
+                      {opt}
+                    </div>
+                  ),
+                )}
               </div>
             )}
           </div>
@@ -99,39 +130,54 @@ const AllProducts = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
             {displayProducts.map((product) => (
               <div key={product._id} className="group cursor-pointer">
-                <div 
-                  className="relative aspect-4/5 bg-gray-100 overflow-hidden" 
+                <div
+                  className="relative aspect-4/5 bg-gray-100 overflow-hidden"
                   onClick={() => router.push(`/product/${product._id}`)}
                 >
-                  <Image 
-                    src={product.images[0]} 
-                    alt={product.name} 
-                    fill 
+                  <Image
+                    src={product.images[0]}
+                    alt={product.name}
+                    fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 25vw"
                   />
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); addToCart(product); }} 
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(product);
+                    }}
                     className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition shadow-lg"
                   >
                     Add to Cart
                   </button>
                 </div>
                 <div className="mt-4">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-1 font-bold">{product.category}</p>
-                  <h3 className="text-[15px] font-medium text-black mb-1 truncate">{product.name}</h3>
-                  <p className="text-[18px] font-bold text-black mb-2">${product.price}</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-1 font-bold">
+                    {product.category}
+                  </p>
+                  <h3 className="text-[15px] font-medium text-black mb-1 truncate">
+                    {product.name}
+                  </h3>
+                  <p className="text-[18px] font-bold text-black mb-2">
+                    ${product.price}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 text-gray-400">No products found.</div>
+          <div className="text-center py-20 text-gray-400">
+            No products found.
+          </div>
         )}
 
         {/* Pagination */}
         <div className="mt-20 flex justify-center items-center gap-2">
-          <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="p-2 border border-gray-200">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="p-2 border border-gray-200"
+          >
             <ArrowLeft size={14} />
           </button>
           {[...Array(totalPages)].map((_, index) => (
@@ -143,7 +189,11 @@ const AllProducts = () => {
               {index + 1}
             </button>
           ))}
-          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="p-2 border border-gray-200">
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="p-2 border border-gray-200"
+          >
             <ArrowRight size={14} />
           </button>
         </div>

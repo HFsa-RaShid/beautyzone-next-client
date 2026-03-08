@@ -5,9 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
 import Image from "next/image";
-import useAllProducts from "@/Hooks/useAllProducts";
+import useAllProducts from "@/hooks/useAllProducts";
 import { useCart } from "@/context/CartContext";
-
 
 const NewArrivals = () => {
   const { allProducts, isLoading } = useAllProducts(1, 100);
@@ -23,7 +22,10 @@ const NewArrivals = () => {
     <section className="container mx-auto py-16 px-10">
       <div className="flex justify-between items-end mb-8  pb-4">
         <h2 className="text-3xl font-bold">New Arrivals</h2>
-        <Link href="/all-products" className="text-sm font-semibold underline hover:text-gray-600">
+        <Link
+          href="/all-products"
+          className="text-sm font-semibold underline hover:text-gray-600"
+        >
           View all products →
         </Link>
       </div>
@@ -44,7 +46,7 @@ const NewArrivals = () => {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 768px) 100vw, 25vw"
               />
-              
+
               {/* Overlay with Add to Cart */}
               <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <button

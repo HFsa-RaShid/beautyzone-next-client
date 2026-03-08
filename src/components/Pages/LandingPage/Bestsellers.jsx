@@ -1,16 +1,16 @@
-"use client"; 
+"use client";
 
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
-import Image from "next/image"; 
+import Image from "next/image";
 import useAllProducts from "@/hooks/useAllProducts";
 import { useCart } from "@/context/CartContext";
 
 const Bestseller = () => {
   const { allProducts, isLoading } = useAllProducts(1, 100);
-  const router = useRouter(); 
+  const router = useRouter();
   const { addToCart } = useCart();
 
   if (isLoading)
@@ -27,7 +27,10 @@ const Bestseller = () => {
     <section className="container mx-auto py-16 px-10">
       <div className="flex justify-between items-end mb-8">
         <h2 className="text-3xl font-bold">Bestsellers</h2>
-        <Link href="/all-products" className="text-sm font-semibold underline hover:text-gray-600">
+        <Link
+          href="/all-products"
+          className="text-sm font-semibold underline hover:text-gray-600"
+        >
           View all products →
         </Link>
       </div>
@@ -72,7 +75,11 @@ const Bestseller = () => {
 
             <div className="flex items-center gap-1 mb-2">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} size={12} className="fill-yellow-400 text-yellow-400" />
+                <Star
+                  key={i}
+                  size={12}
+                  className="fill-yellow-400 text-yellow-400"
+                />
               ))}
               <span className="text-[10px] text-gray-400 ml-1">4.9 (150)</span>
             </div>

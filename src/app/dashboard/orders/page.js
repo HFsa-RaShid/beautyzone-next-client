@@ -1,7 +1,7 @@
 "use client";
 
+import useAllOrders from "@/hooks/useAllOrders";
 import { useState } from "react";
-import useAllOrders from "@/Hooks/useAllOrders"; // আপনার সঠিক পাথ দিন
 
 const DashboardOrdersPage = () => {
   const [page, setPage] = useState(1);
@@ -17,12 +17,19 @@ const DashboardOrdersPage = () => {
       {/* Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         {[
-          { title: "Total Orders", value: pagination.totalItems || 0, icon: "📦" },
+          {
+            title: "Total Orders",
+            value: pagination.totalItems || 0,
+            icon: "📦",
+          },
           { title: "Processing", value: "12", icon: "⏳" },
           { title: "Pending Payments", value: "12", icon: "⚠️" },
           { title: "Revenue", value: "$91,526", icon: "📈" },
         ].map((stat, i) => (
-          <div key={i} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <div
+            key={i}
+            className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm"
+          >
             <p className="text-xs text-gray-400 mb-2">{stat.title}</p>
             <h3 className="text-2xl font-bold">{stat.value}</h3>
           </div>
@@ -68,15 +75,27 @@ const DashboardOrdersPage = () => {
           </thead>
           <tbody>
             {orders.map((order) => (
-              <tr key={order._id} className="hover:bg-gray-50 text-sm border-b last:border-none">
-                <td className="p-5 font-mono text-xs">#{order.transactionId?.slice(-8)}</td>
+              <tr
+                key={order._id}
+                className="hover:bg-gray-50 text-sm border-b last:border-none"
+              >
+                <td className="p-5 font-mono text-xs">
+                  #{order.transactionId?.slice(-8)}
+                </td>
                 <td className="p-5">{order.customer?.name || "Guest"}</td>
-                <td className="p-5">{new Date(order.orderDate).toLocaleDateString()}</td>
+                <td className="p-5">
+                  {new Date(order.orderDate).toLocaleDateString()}
+                </td>
                 <td className="p-5 font-bold">
-                  ${order.items?.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}
+                  $
+                  {order.items
+                    ?.reduce((sum, item) => sum + item.price * item.quantity, 0)
+                    .toFixed(2)}
                 </td>
                 <td className="p-5">
-                  <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase ${order.paidStatus ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                  <span
+                    className={`px-2 py-1 rounded text-[10px] font-bold uppercase ${order.paidStatus ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+                  >
                     {order.paidStatus ? "Paid" : "Failed"}
                   </span>
                 </td>
