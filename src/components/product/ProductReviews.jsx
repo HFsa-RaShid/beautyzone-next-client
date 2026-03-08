@@ -5,9 +5,9 @@ import { Star } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Swal from "sweetalert2";
-import useProductReviews from "@/Hooks/useProductReviews";
-import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useAuth } from "@/context/AuthContext";
+import useProductReviews from "@/hooks/useProductReviews";
+import useAxiosPublic from "@/hooks/useAxiosPublic";
 
 const ProductReviews = () => {
   const params = useParams();
