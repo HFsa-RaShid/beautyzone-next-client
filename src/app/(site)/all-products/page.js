@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -8,14 +9,25 @@ import useAllProducts from "@/Hooks/useAllProducts";
 import { useCart } from "@/context/CartContext";
 
 const AllProducts = () => {
+  
+  const [activeCategory, setActiveCategory] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("selectedCategory");
+      if (saved) {
+        localStorage.removeItem("selectedCategory");
+        return saved;
+      }
+    }
+    return "All Product";
+  });
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortOption, setSortOption] = useState("Featured");
+  const [showSortMenu, setShowSortMenu] = useState(false);
+  
   const { allProducts, isLoading, refetch } = useAllProducts(currentPage);
   const router = useRouter();
   const { addToCart } = useCart();
-
-  const [activeCategory, setActiveCategory] = useState("All Product");
-  const [sortOption, setSortOption] = useState("Featured");
-  const [showSortMenu, setShowSortMenu] = useState(false);
 
   const categories = ["All Product", "Serums", "Sun Care", "Toners", "Cleansers", "Kits", "Moisturizers", "Makeup"];
 
@@ -28,9 +40,11 @@ const AllProducts = () => {
   const productsArray = allProducts?.data?.products || [];
   const totalPages = allProducts?.data?.totalPages || 1;
 
+
   let displayProducts = activeCategory === "All Product"
     ? productsArray
-    : productsArray.filter(p => p.category === activeCategory);
+    : productsArray.filter(p => p.category?.toLowerCase() === activeCategory.toLowerCase());
+
 
   if (sortOption === "Price: Low to High") {
     displayProducts = [...displayProducts].sort((a, b) => a.price - b.price);
@@ -79,7 +93,7 @@ const AllProducts = () => {
         </div>
       </div>
 
-      {/* Grid */}
+      {/* Product Grid */}
       <div className="container mx-auto py-16 px-6">
         {displayProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
@@ -107,10 +121,6 @@ const AllProducts = () => {
                   <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-1 font-bold">{product.category}</p>
                   <h3 className="text-[15px] font-medium text-black mb-1 truncate">{product.name}</h3>
                   <p className="text-[18px] font-bold text-black mb-2">${product.price}</p>
-                  <div className="flex items-center gap-1">
-                    <Star size={10} className="fill-black text-black" />
-                    <span className="text-[10px] text-gray-400">(150)</span>
-                  </div>
                 </div>
               </div>
             ))}

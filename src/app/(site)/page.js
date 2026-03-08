@@ -11,7 +11,7 @@ export default function HomePage() {
     <div className="min-h-screen">
       <Hero />
       <Bestsellers />
-      <ShopByCategory />
+      <ShopByCategory></ShopByCategory>
       <NewArrival />
       <SkincarePhilosophy />
       <Testimonials />

@@ -1,3 +1,5 @@
+"use client"; 
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,16 +12,20 @@ const categories = [
 ];
 
 const ShopByCategory = () => {
+  const handleCategoryClick = (name) => {
+    localStorage.setItem("selectedCategory", name);
+  };
+
   return (
     <section className="py-16 bg-[#F9EFF1]">
       <div className="container mx-auto px-10">
         <h2 className="text-3xl font-bold mb-8 text-center md:text-left">Shop by Category</h2>
-        
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {categories.map((cat, index) => (
             <Link 
               key={index} 
-              href={`/products?category=${cat.name.toLowerCase()}`}
+              href="/all-products" 
+              onClick={() => handleCategoryClick(cat.name)}
               className="group relative h-64 overflow-hidden rounded-lg cursor-pointer"
             >
               <Image 
@@ -30,9 +36,7 @@ const ShopByCategory = () => {
                 className="object-cover transition duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center transition-opacity duration-300 group-hover:bg-black/20">
-                <span className="text-white text-xl font-medium tracking-wide">
-                  {cat.name}
-                </span>
+                <span className="text-white text-xl font-medium tracking-wide">{cat.name}</span>
               </div>
             </Link>
           ))}
