@@ -1,9 +1,8 @@
-
 "use client";
 import axios from "axios";
 
 const axiosPublic = axios.create({
-  baseURL: "http://localhost:5001",
+  baseURL: "http://beautyzone-nextjs-server.vercel.app",
   withCredentials: true,
 });
 const useAxiosPublic = () => {
