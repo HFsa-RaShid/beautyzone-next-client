@@ -118,7 +118,7 @@ const Navbar = () => {
                       {user.email === "admin@gmail.com" ? (
                         <button
                           onClick={() => {
-                            router.push("/dashboard");
+                            router.push("/dashboard/overview");
                             setUserMenuOpen(false);
                           }}
                           className="w-full text-left px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-50 hover:text-[#b06d72] transition"

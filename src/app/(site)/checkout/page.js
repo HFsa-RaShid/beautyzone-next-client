@@ -1,13 +1,18 @@
+
 "use client";
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; 
 import { ChevronDown, ArrowRight } from "lucide-react";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 
 const CheckoutPage = () => {
   const { items } = useCart();
+  const { user } = useAuth();
+  const router = useRouter(); 
   const axiosPublic = useAxiosPublic();
   const [shippingCost, setShippingCost] = useState(5.99);
 
@@ -18,6 +23,13 @@ const CheckoutPage = () => {
 
   const handleCheckout = async (e) => {
     e.preventDefault();
+
+   
+    if (!user) {
+      router.push("/signUp");
+      return;
+    }
+
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
@@ -49,7 +61,6 @@ const CheckoutPage = () => {
 
   return (
     <div className="bg-[#f5e9da] min-h-screen font-sans">
-
       <div className="container mx-auto px-6 py-12">
         <h1 className="text-4xl font-serif mb-12 text-[#1a1a1a]">Checkout</h1>
 
@@ -62,10 +73,17 @@ const CheckoutPage = () => {
                 {['firstName', 'lastName', 'email', 'phone'].map((field) => (
                   <div key={field} className="space-y-1">
                     <label className="text-[10px] uppercase text-gray-400 font-bold">{field.replace(/([A-Z])/g, ' $1')}</label>
-                    <input name={field} required type={field === 'email' ? 'email' : 'text'} className="w-full border border-gray-200 p-3 text-sm focus:outline-black" />
+                    <input 
+                        name={field} 
+                        required 
+                        defaultValue={user ? (field === 'email' ? user.email : '') : ''} // ইউজার থাকলে ইমেইল অটো-ফিল
+                        type={field === 'email' ? 'email' : 'text'} 
+                        className="w-full border border-gray-200 p-3 text-sm focus:outline-black" 
+                    />
                   </div>
                 ))}
               </div>
+           
               <div className="mt-5 space-y-1">
                 <label className="text-[10px] uppercase text-gray-400 font-bold">Apartment, suite, etc.</label>
                 <input name="address" required type="text" className="w-full border border-gray-200 p-3 text-sm focus:outline-black" />
@@ -142,7 +160,6 @@ const CheckoutPage = () => {
           </div>
         </form>
       </div>
- 
     </div>
   );
 };
